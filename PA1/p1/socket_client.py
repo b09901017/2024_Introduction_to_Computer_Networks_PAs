@@ -17,8 +17,8 @@ def main():
     parser = argparse.ArgumentParser()
 
     parser.add_argument('--server', default="local")
-    parser.add_argument('--testcase', default='basic')
-    parser.add_argument('--studentID', default=None)                    #Modify to your own student ID 
+    parser.add_argument('--testcase', default='b0')
+    parser.add_argument('--studentID', default='b09901017')                    #Modify to your own student ID 
 
     # Transfer input to dictionary form 
     input_info = vars(parser.parse_args())
@@ -38,10 +38,11 @@ def main():
         # Specify the TCP connection type and make connection to the server
         # TODO Start
         if select_server == 'TA':
-            HOST, PORT =
+            HOST, PORT = '140.112.42.104' , 7777
         else:
-            HOST, PORT =
-        s =
+            HOST, PORT = '127.0.0.1', 2040
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        s.connect((HOST, PORT))
         # TODO End
 
 
@@ -58,6 +59,7 @@ def main():
 
                     # Send the response to the server
                     # TODO Start
+                    s.sendall(response.encode('utf-8'))
                     # TODO End
                 else:
                     # If not "Y" or "N," assume it's a mathematical expression
@@ -66,7 +68,7 @@ def main():
 
                     # Receive the server's message without color
                     # TODO Start
-                    server_message =
+                    server_message = s.recv(1024).decode('utf-8')
                     # TODO End
 
                     # Log the server's message
@@ -75,11 +77,12 @@ def main():
 
                     # Send the question to the server
                     # TODO Start
+                    s.sendall(question.encode('utf-8'))
                     # TODO End
 
                     # Receive and log the answer from the server
                     # TODO Start
-                    ans =
+                    ans = s.recv(1024).decode('utf-8')
                     # TODO End
 
                     log_message(logFile, "Get the answer from server: ", RESET)
